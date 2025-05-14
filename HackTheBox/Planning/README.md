@@ -2,7 +2,7 @@
 
 The nmap scan gives us two open ports; SSH (Port 22) and nginx web server (Port 80).
 nmap -sCV -T4 10.10.11.68
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image002.png?raw=true)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image002.png)
 
 Upon enumeration of the directories on the web server, nothing of significance comes up.
 gobuster dir -u http://planning.htb/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 50 --timeout 20s -x html,php
