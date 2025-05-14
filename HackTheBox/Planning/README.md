@@ -1,4 +1,6 @@
 #  HackTheBox: Planning - Writeup
+This medium-difficulty box involves discovering a vulnerable Grafana v11.0.0 subdomain and exploiting CVE-2024-9264 for initial access. After pivoting to the user enzo, an internal cronjob web app running as root is accessed via SSH tunneling. Abusing this app allows privilege escalation to root. The box combines web enumeration, real-world CVE usage, and creative privesc via scheduled tasks.
+
 
 ##  Enumeration
 
