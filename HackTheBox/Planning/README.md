@@ -23,7 +23,7 @@ We then use an exploit found on github by z3k0sec, which allows us to RCE into t
 
 Git clone https://github.com/z3k0sec/CVE-2024-9264-RCE-Exploit
 
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image0013.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image013.png)
 
 The script is then executed and a listener is set up.
 
@@ -51,7 +51,7 @@ linPEAS is ran again, this time in enzo’s user to look for any sensitive files
 
 Exploring the crontab.db, we find a password for the root user. Looking for active connections, we see a webserver being hosted at port 8000.
 
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image0025.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image025.png)
 
 Using SSH tunnelling we host it in our own machine, at port 8001. It requires a username and password, available from the crontab.db database.
 
