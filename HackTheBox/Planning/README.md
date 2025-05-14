@@ -1,4 +1,4 @@
-#Planning Machine Writeup
+# Planning Machine Writeup
 
 The nmap scan gives us two open ports; SSH (Port 22) and nginx web server (Port 80).
 nmap -sCV -T4 10.10.11.68
