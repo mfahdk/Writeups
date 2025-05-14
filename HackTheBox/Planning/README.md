@@ -21,6 +21,7 @@ Going into the webpage, we see it runs V11.0.0 which is vulnerable to RCE (CVE-2
  
 We then use an exploit found on github by z3k0sec, which allows us to RCE into the system using reverse shell.
 Git clone https://github.com/z3k0sec/CVE-2024-9264-RCE-Exploit
+
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image0013.png)
 
 The script is then executed and a listener is set up.
