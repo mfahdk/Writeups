@@ -3,7 +3,7 @@
 Welcome to my Hack The Box (HTB) writeup repository!
 
 🛡️ **Important Notice**  
-In accordance with [HTB's disclosure policy](https://www.hackthebox.com/writeups), **writeups are only published for retired machines** to avoid spoiling active challenges or violating platform rules.
+In accordance with HTB's disclosure policy, **writeups are only published for retired machines** to avoid spoiling active challenges or violating platform rules.
 
 🧠 Each writeup will be released **after the machine is officially retired** by Hack The Box.  
 🔐 Active machine solutions will never be posted or shared publicly.
