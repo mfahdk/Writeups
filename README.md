@@ -2,7 +2,7 @@
 🐚 A collection of personal writeups for Hack The Box (HTB) machines, shared only after the machines have been retired, in accordance with HTB’s disclosure policy. Each writeup walks through the full attack path — from enumeration and exploitation to privilege escalation — with insights and key takeaways for learning and review.
 
 ### [Cat machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Cat)
-Cat is a Medium-difficulty machine on Hack The Box that blends web exploitation with real-world misconfigurations and insecure development practices. The machine begins with standard enumeration, leading to the discovery of an exposed .git directory containing source code for a custom web application. Through careful analysis, multiple vulnerabilities are identified including stored XSS, SQL injection, and poor session handling. The challenge also involves tunneling to access internal services, where a vulnerable Gitea instance (CVE-2024-6886, a persistent XSS flaw) is exploited to extract sensitive internal files. Overall, the box offers a solid progression path that tests enumeration, web exploitation, and lateral movement skills.
+
 ### [Planning machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Planning)
-This easy-difficulty box involves discovering a vulnerable Grafana v11.0.0 subdomain and exploiting CVE-2024-9264 for initial access. After pivoting to the user enzo, an internal cronjob web app running as root is accessed via SSH tunneling. Abusing this app allows privilege escalation to root. The box combines web enumeration, real-world CVE usage, and creative privesc via scheduled tasks.
+
 ### [Nocturnal machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Nocturnal)
