@@ -6,3 +6,7 @@
 ### [Planning machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Planning)
 
 ### [Nocturnal machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Nocturnal)
+
+### [Dog machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Dog)
+
+### [Artifical machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Artificial)
