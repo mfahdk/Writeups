@@ -10,3 +10,7 @@
 ### [Dog machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Dog)
 
 ### [Artifical machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Artificial)
+
+### [Outbound machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Outbound)
+
+### [Fluffy machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Fluffy)
