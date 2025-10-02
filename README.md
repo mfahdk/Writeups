@@ -15,7 +15,7 @@
 
 ### [Fluffy machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Fluffy) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
 
-### [Tombwatcher machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Fluffy) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
+### [Tombwatcher machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/TombWatcher) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
 
 
 
