@@ -1,5 +1,5 @@
 # HackTheBox Machine Writeups
-🐚 A collection of personal writeups for Hack The Box (HTB) machines, shared only after the machines have been retired, in accordance with HTB’s disclosure policy. Each writeup walks through the full attack path — from enumeration and exploitation to privilege escalation — with insights and key takeaways for learning and review.
+A collection of personal writeups for Hack The Box (HTB) machines, shared only after the machines have been retired, in accordance with HTB’s disclosure policy. Each writeup walks through the full attack path from enumeration and exploitation to privilege escalation with insights and key takeaways for learning and review.
 
 ### [Cat machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Cat) <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux" width="15"/>
 
@@ -16,6 +16,11 @@
 ### [Fluffy machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Fluffy) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
 
 ### [Tombwatcher machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/TombWatcher) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
+
+# Proofs of Concepts
+
+### [CVE-2026-39987 RCE PoC](https://github.com/mfahdk/CVE-2026-39987_RCE_PoC)
+
 
 
 
