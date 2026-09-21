@@ -15,7 +15,6 @@ A collection of personal writeups for Hack The Box (HTB) machines, shared only a
 
 ### [Fluffy machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Fluffy) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
 
-### [Tombwatcher machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/TombWatcher) <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/windows8/windows8-original.svg" alt="Windows" width="15"/>
 
 # Proofs of Concepts
 A collection of Proofs of Concept (PoCs), including custom code developed by me to extend, automate, or complete existing exploits. Some PoCs are based on publicly available research or exploits that demonstrate only partial functionality, which I have adapted to demonstrate additional capabilities such as command execution or RCE.
