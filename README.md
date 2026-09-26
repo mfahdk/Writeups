@@ -3,6 +3,8 @@ A collection of personal writeups for Hack The Box (HTB) machines, shared only a
 
 ### [Cat machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Cat) <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux" width="15"/>
 
+### [Devhub machine (Medium)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Devhub) <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux" width="15"/>
+
 ### [Planning machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Planning) <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux" width="15"/>
 
 ### [Nocturnal machine (Easy)](https://github.com/mfahdk/Writeups/tree/main/HackTheBox/Nocturnal) <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Tux.svg" alt="Linux" width="15"/>
