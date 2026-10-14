@@ -30,11 +30,11 @@ Which gave me port 22 and 80 open. Meaning the next step would be to conduct web
 
 So, the next step was to check the webpage manually, after adding `10.129.245.216    devhub.htb` to `/etc/hosts`.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/1.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/1.png)
 
 Opening the webpage gives us some information. On the left side, it mentions an MCP Inspector instance is running on port 6274. We will investigate that first.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/2.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/2.png)
 
 Doing so takes us to an MCPJam v1.4.2 instance. Further reconnaissance shows us that this version is vulnerable to RCE, particularly CVE-2026-23744.
 
@@ -54,7 +54,7 @@ Using the PoC from [here](https://github.com/suljov/CVE-2026-23744-Remote-Code-E
 
 I then began enumerating the internal services because the initial nmap scan only exposed SSH and HTTP externally. I used [linpeas](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) to do so.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/6.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/6.png)
 
 This revealed several services listening locally, including the OPSMCP API on port `5000` and Jupyter on port `8888`.
 
@@ -86,16 +86,16 @@ chisel server --reverse -p 8000
 
 This exposed the target's local Jupyter service on the attacker's port `8888`.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/7.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/7.png)
 
 Opening it on firefox revealed that it requires a token/password to log into the instance.
 Which was found by looking into the jupyter process running on the machine using `ps aux | grep jupyter`.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/8.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/8.png)
 
 Which revealed the token. After which, I opened up a terminal on the jupyter instance, gaining the user flag and analyst user.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/user_flag.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/user_flag.png)
 
 ## Privelege escalation
 
@@ -104,11 +104,11 @@ Which revealed the token. After which, I opened up a terminal on the jupyter ins
 The OPSMCP API was only accessible locally, so I first interacted with it from the compromised machine.
 The API required an API key, which was discovered during enumeration:
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/11.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/11.png)
 
 Running linpeas again, with the analyst user gave me some interesting files particularly the `server.py` in /opt/opsmcp/.
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/10.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/10.png)
 
 Looking into server.py revealed an API key, used to authenticate the user into the OPSMCP server.
 
@@ -168,7 +168,7 @@ Using this command, the SSH keys were found.
 curl -X POST http://127.0.0.1:5000/tools/call -H "X-API-Key: opsmcp_secret_key_4f5a6b7c8d9e0f1a" -H "Content-Type: application/json" -d '{"name":"ops._admin_dump", "arguments": {"confirm":true,"target":"ssh_keys"}}' | jq -r '.root_private_key' > ssh_key
 ```
 
-![Image Alt](https://github.com/mfahdk/DevHub/tree/main/Screenshot/root.png)
+![Image Alt](https://github.com/mfahdk/Writeups/blob/main/HackTheBox/Devhub/Screenshots/root.png)
 
 After correcting the key formatting and permissions:
 
